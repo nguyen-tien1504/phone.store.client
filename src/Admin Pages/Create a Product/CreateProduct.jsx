@@ -30,7 +30,7 @@ const CreateProduct = () => {
       brand: data.brand,
     };
     axios
-      .post("https://phonestoreserver.herokuapp.com/products", reqData)
+      .post("https://phone-store-server.onrender.com/products", reqData)
       .then(() => navigate("/admin/products"))
       .catch((err) => console.log(err));
   };

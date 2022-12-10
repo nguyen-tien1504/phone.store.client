@@ -94,7 +94,7 @@ const ProductDetail = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     axios
-      .get(`https://phonestoreserver.herokuapp.com/products/${productID}`)
+      .get(`https://phone-store-server.onrender.com/products/${productID}`)
       .then((res) => setData({ ...res.data.product, id: res.data.product._id }))
       .then(() => setIsLoaded(true))
       .catch((err) => console.log(err));

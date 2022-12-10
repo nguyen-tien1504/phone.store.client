@@ -34,7 +34,7 @@ const CheckOut1 = () => {
   const handleOrder = () => {
     const addressDelivery = getValues().addressDelivery;
     axios
-      .put(`https://phonestoreserver.herokuapp.com/users/${userData._id}`, {
+      .put(`https://phone-store-server.onrender.com/users/${userData._id}`, {
         order: { ...order, addressDelivery: addressDelivery },
       })
       .then(() => navigate("/successpage"))

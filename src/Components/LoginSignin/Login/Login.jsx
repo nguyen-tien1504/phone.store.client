@@ -46,7 +46,7 @@ const Login = () => {
     //   })
     //   .catch((err) => console.log(err));
     axios
-      .post("https://phonestoreserver.herokuapp.com/users/login", data)
+      .post("https://phone-store-server.onrender.com/users/login", data)
       .then((res) => {
         if (res.data.admin) {
           navigate("/admin/products");

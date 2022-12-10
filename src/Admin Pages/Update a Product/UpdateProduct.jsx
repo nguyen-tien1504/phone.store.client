@@ -12,14 +12,14 @@ const UpdateProduct = () => {
   const navigate = useNavigate();
   useEffect(() => {
     axios
-      .get(`https://phonestoreserver.herokuapp.com/products/${id}`)
+      .get(`https://phone-store-server.onrender.com/products/${id}`)
       .then((res) => setData(res.data.product))
       .catch((err) => console.log(err));
   }, [id, data]);
   const handleUpdateProduct = () => {
     const values = getValues();
     axios
-      .put(`https://phonestoreserver.herokuapp.com/products/${id}`, values)
+      .put(`https://phone-store-server.onrender.com/products/${id}`, values)
       .then(() => navigate("/admin/products"));
   };
   return (

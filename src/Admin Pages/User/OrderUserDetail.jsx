@@ -9,7 +9,7 @@ const OrderUserDetail = () => {
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     axios
-      .get(`https://phonestoreserver.herokuapp.com/users/${user._id}`)
+      .get(`https://phone-store-server.onrender.com/users/${user._id}`)
       .then((res) => {
         setData(res.data.user);
         setOrder(res.data.user.order);

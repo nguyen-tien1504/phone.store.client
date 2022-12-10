@@ -10,7 +10,7 @@ const ProductsTable = (props) => {
   }
   const handleDelete = (id) => {
     axios
-      .delete(`https://phonestoreserver.herokuapp.com/products/${id}`)
+      .delete(`https://phone-store-server.onrender.com/products/${id}`)
       .then(() => navigate(0))
       .catch((err) => console.log(err));
   };

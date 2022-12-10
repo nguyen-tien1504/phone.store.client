@@ -22,7 +22,7 @@ const OrderDetail = () => {
   }
   useEffect(() => {
     axios
-      .get(`https://phonestoreserver.herokuapp.com/users/${userID}`)
+      .get(`https://phone-store-server.onrender.com/users/${userID}`)
       .then((res) => {
         setData(res.data.user);
         setCart(res.data.user.order);

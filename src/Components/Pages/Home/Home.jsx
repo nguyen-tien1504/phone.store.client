@@ -78,7 +78,7 @@ const Home = () => {
   // useEffect(() => {
   //   axios
   //     .get(
-  //       "https://phonestoreserver.herokuapp.com/products"
+  //       "https://phone-store-server.onrender.com/products"
   //     )
   //     .then((res) => setData(res.data.product));
   // }, []);
@@ -86,7 +86,7 @@ const Home = () => {
   const dataSearched = useSelector((state) => state.searchQuery);
   const { isLoading, data } = useQuery("all Products", async () => {
     const dataRes = await axios
-      .get("https://phonestoreserver.herokuapp.com/products")
+      .get("https://phone-store-server.onrender.com/products")
       .then((res) => res.data.product);
     setInitData(dataRes);
     return dataRes;

@@ -20,7 +20,7 @@ const Order = () => {
   }
   useEffect(() => {
     axios
-      .get("https://phonestoreserver.herokuapp.com/users")
+      .get("https://phone-store-server.onrender.com/users")
       .then((res) => {
         const newArr = res.data.users.filter((item) => {
           return item.order.totalBill > 0;

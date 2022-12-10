@@ -49,7 +49,7 @@ const Signin = () => {
     // };
     const {confirmpassword,...rest} = getValues();
     axios
-      .post("https://phonestoreserver.herokuapp.com/users/signin", rest)
+      .post("https://phone-store-server.onrender.com/signin", rest)
       .then((res) => {
         if (res.data === "Tạo tài khoản thành công") {
           alert(res.data);

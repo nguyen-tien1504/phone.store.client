@@ -22,7 +22,7 @@ const User = () => {
   }
   useEffect(() => {
     axios
-      .get(`https://phonestoreserver.herokuapp.com/users/${user._id}`)
+      .get(`https://phone-store-server.onrender.com/users/${user._id}`)
       .then((res) => {
         setCart(res.data.user.order);
       })
@@ -43,7 +43,7 @@ const User = () => {
       return setMessage("Vui lòng nhập mật khẩu");
     }
     axios
-      .put(`http://localhost:3000/users/updateUser/${user._id}`, value)
+      .put(`https://phone-store-server.onrender.com/users/updateUser/${user._id}`, value)
       .then((res) => setMessage(res.data))
       .catch((err) => console.log(err));
   };
