@@ -10,7 +10,7 @@ const ProductsTable = (props) => {
   }
   const handleDelete = (id) => {
     axios
-      .delete(`https://phone-store-server.onrender.com/products/${id}`)
+      .delete(`http://localhost:3000/products/${id}`)
       .then(() => navigate(0))
       .catch((err) => console.log(err));
   };
@@ -45,7 +45,7 @@ const ProductsTable = (props) => {
           </Link>
           <button
             onClick={() => handleDelete(props.id)}
-            className="text-[#2f80ed] font-medium"
+            className="text-[#2f80ed] font-medium text-red-500"
           >
             Xóa
           </button>
@@ -54,6 +54,7 @@ const ProductsTable = (props) => {
     </tr>
   );
 };
+
 export const Heading = (props) => {
   return (
     <>
@@ -68,12 +69,12 @@ export const Heading = (props) => {
 const GetAllProducts = () => {
   const [offset, setOffset] = useState(1);
   const [data, setData] = useState([]);
-  const [perPage] = useState(3);
+  const [perPage] = useState(4);
   const [pageCount, setPageCount] = useState(0);
   const [count, setCount] = useState(0);
   const getData = async () => {
     const res = await axios.get(
-      `https://phonestoreserver.herokuapp.com/products/`
+      `http://localhost:3000/products/`
     );
     const data = res.data.product;
     const slice = data.slice(offset - 1, offset - 1 + perPage);

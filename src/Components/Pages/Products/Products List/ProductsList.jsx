@@ -4,101 +4,58 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useQuery } from "react-query";
 import { useSelector } from "react-redux";
+import { useProducts } from "../../../../Query/query";
 
 const ProductsList = () => {
   const location = useLocation();
-  const brand = location.state.name;
-  const [data1, setData1] = useState([]);
-  const [data2, setData2] = useState();
-  const [loaded, setLoaded] = useState(false);
+  const { categoryName, categoryId } = location.state;
+  const [data2, setData2] = useState([]);
   const dataSearched = useSelector((state) => state.searchQuery);
-  const { data, isLoading, isFetching } = useQuery(
-    "all Products"
-    // () => {
-    //   if (!data) {
-    //     axios
-    //       .get(`https://phonestoreserver.herokuapp.com/products`)
-    //       .catch((err) => console.log(err));
-    //   } else {
-    //     return;
-    //   }
-    // }
-  );
-  useEffect(() => {
-    if (brand == "Tất cả") {
-      setData1(data);
-      setData2(data);
-      setLoaded(true);
-    } else {
-      const newData = data.filter((item) => item.brand == brand);
-      setData1(newData);
-      setData2(newData);
-      setLoaded(true);
-    }
-  }, [brand]);
-  // if (brand == "Tất cả") {
-  //   useEffect(() => {
-  //     axios
-  //       .get(`https://phonestoreserver.herokuapp.com/products`)
-  //       .then((res) => setData1(res.data.product))
-  //       .then(() => setLoaded(true))
-  //       .catch((err) => console.log(err));
-  //   }, [brand]);
-  // } else {
-  //   useEffect(() => {
-  //     axios
-  //       .get(`https://phonestoreserver.herokuapp.com/products`, {
-  //         params: { brand: brand },
-  //       })
-  //       .then((res) => setData1(res.data.product))
-  //       .then(() => setLoaded(true))
-  //       .catch((err) => console.log(err));
-  //   }, [brand]);
-  // }
+  const { isLoading, data } = useProducts(categoryName);
+  const [isFilter, setIsFilter] = useState(false);
   useEffect(() => {
     if (dataSearched) {
-      const find = data.filter((item) => {
-        return (
-          item.title.toLowerCase().indexOf(dataSearched.toLowerCase()) !== -1
-        );
-      });
+      const find = data.filter(
+        (item) => item.title.toLowerCase().indexOf(dataSearched.toLowerCase()) !== -1
+      );
       setData2(find);
-      setData1(find);
-    } else {
-      setData2(data);
+      setIsFilter(false);
     }
   }, [dataSearched]);
+
   const handleFilter = (e) => {
     const option = e.target.value;
+    setIsFilter(true);
     switch (option) {
       case "option1":
-        var dataFilter = data1.filter((item) => item.price < 2000000);
+        var dataFilter = data.filter((item) => item.price < 2000000);
         setData2(dataFilter);
         break;
       case "option2":
-        var dataFilter = data1.filter(
+        var dataFilter = data.filter(
           (item) => item.price >= 2000000 && item.price < 4000000
         );
         setData2(dataFilter);
         break;
       case "option3":
-        var dataFilter = data1.filter(
+        var dataFilter = data.filter(
           (item) => item.price >= 4000000 && item.price < 7000000
         );
         setData2(dataFilter);
         break;
       case "option4":
-        var dataFilter = data1.filter(
+        var dataFilter = data.filter(
           (item) => item.price >= 7000000 && item.price < 15000000
         );
         setData2(dataFilter);
         break;
       case "option5":
-        var dataFilter = data1.filter((item) => item.price >= 15000000);
+        var dataFilter = data.filter((item) => item.price >= 15000000);
         setData2(dataFilter);
         break;
       default:
-        setData2(data1);
+        setIsFilter(false);
+        setData2(data);
     }
   };
   return (
@@ -175,14 +132,17 @@ const ProductsList = () => {
           <div className="">
             <div className="flex gap-1">
               <p className="font-bold text-2xl uppercase">
-                {dataSearched ? dataSearched : brand}
+                {dataSearched ? "Tất cả" : categoryName}
               </p>
-              <p>({loaded && data2 ? data2.length : data1.length} sản phẩm)</p>
+              <p>
+                ({!isLoading && (dataSearched || isFilter ? data2 : data).length} sản
+                phẩm)
+              </p>
             </div>
           </div>
           <div className="grid grid-cols-3 gap-x-4">
-            {loaded &&
-              (data2 !== undefined ? data2 : data1).map((item) => {
+            {!isLoading &&
+              (dataSearched || isFilter ? data2 : data).map((item) => {
                 return (
                   <HomeProduct
                     width="full"
@@ -194,19 +154,6 @@ const ProductsList = () => {
                   />
                 );
               })}
-            {/* {loaded &&
-              data.map((item) => {
-                return (
-                  <HomeProduct
-                    width="full"
-                    title={item.title}
-                    price={item.price}
-                    thumbnail={item.thumbnail}
-                    key={item._id}
-                    id={item._id}
-                  />
-                );
-              })} */}
           </div>
         </div>
       </div>

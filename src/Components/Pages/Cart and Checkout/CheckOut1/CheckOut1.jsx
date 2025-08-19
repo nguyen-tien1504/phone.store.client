@@ -22,7 +22,6 @@ const CheckOut1 = () => {
   }
   const order = {
     cart: [...data],
-    totalBill: totalBill,
   };
 
   const {
@@ -34,7 +33,7 @@ const CheckOut1 = () => {
   const handleOrder = () => {
     const addressDelivery = getValues().addressDelivery;
     axios
-      .put(`https://phone-store-server.onrender.com/users/${userData._id}`, {
+      .put(`http://localhost:3000/users/${userData._id}`, {
         order: { ...order, addressDelivery: addressDelivery },
       })
       .then(() => navigate("/successpage"))

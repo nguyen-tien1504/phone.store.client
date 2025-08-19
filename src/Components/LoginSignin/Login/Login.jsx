@@ -17,10 +17,6 @@ const Login = () => {
       .required("Vui lòng nhập email.")
       .matches(emailRegExp, "Vui lòng nhập đúng định dạng email."),
     password: yup.string().required("Vui lòng nhập mật khẩu."),
-    // email: yup
-    //   .string()
-    //   .required("Vui lòng nhập số điện thoại.")
-    //   .matches(emailRegExp, "Vui lòng nhập đúng định dạng số điện thoại."),
   });
   const {
     register,
@@ -30,23 +26,8 @@ const Login = () => {
   } = useForm({ resolver: yupResolver(schema), mode: "onChange" });
   function handleLogin() {
     const data = getValues();
-    // console.log(data);
-    // axios
-    //   .post("https://phonestoreserver.herokuapp.com/users/login", data)
-    //   .then((res) => {
-    //     if (res.data.user.admin) {
-    //       navigate("/admin/products");
-    //     } else if (typeof res.data == "object") {
-    //       setMessage(false);
-    //       window.localStorage.setItem("user", JSON.stringify(res.data));
-    //       navigate("/");
-    //     } else {
-    //       setMessage(res.data);
-    //     }
-    //   })
-    //   .catch((err) => console.log(err));
     axios
-      .post("https://phone-store-server.onrender.com/users/login", data)
+      .post("http://localhost:3000/users/login", data)
       .then((res) => {
         if (res.data.admin) {
           navigate("/admin/products");

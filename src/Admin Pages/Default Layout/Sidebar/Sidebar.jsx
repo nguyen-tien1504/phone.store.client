@@ -19,7 +19,7 @@ const Sidebar = () => {
           </svg>
           <p className="text-xl text-[#bdbdbd] hover:text-white">Sản phẩm</p>
         </Link>
-        <Link to="" className="flex items-center gap-3">
+        <Link to="/admin/categories" className="flex items-center gap-3">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="25"

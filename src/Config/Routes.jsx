@@ -17,6 +17,8 @@ import Order from "../Admin Pages/Order/Order";
 import OrderDetail from "../Admin Pages/Order/OrderDetail";
 import User from "./../Admin Pages/User/User";
 import OrderUserDetail from "../Admin Pages/User/OrderUserDetail";
+import Category from "../Admin Pages/Category/Category";
+import CreateCategory from "../Admin Pages/Category/CreateCategory";
 
 const router = createBrowserRouter([
   {
@@ -70,6 +72,14 @@ const router = createBrowserRouter([
     path: "/admin",
     element: <DefaultLayoutAdmin />,
     children: [
+      {
+        path: "/admin/categories",
+        element: <Category />,
+      },
+      {
+        path: "/admin/create-category",
+        element: <CreateCategory />,
+      },
       { path: "/admin/products", element: <GetAllProducts /> },
       { path: "/admin/orders", element: <Order /> },
       { path: "/admin/orders/order-detail/:userID", element: <OrderDetail /> },

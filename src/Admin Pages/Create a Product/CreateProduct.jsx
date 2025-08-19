@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Heading } from "./../Products/getAllProducts";
 import { useForm } from "react-hook-form";
@@ -30,7 +29,7 @@ const CreateProduct = () => {
       brand: data.brand,
     };
     axios
-      .post("https://phone-store-server.onrender.com/products", reqData)
+      .post("http://localhost:3000/products", reqData)
       .then(() => navigate("/admin/products"))
       .catch((err) => console.log(err));
   };

@@ -9,7 +9,7 @@ const DefaultLayoutAdmin = () => {
       <div>
         <Navbar />
       </div>
-      <div className="flex h-fit">
+      <div className="flex min-h-screen">
         <div className="w-[250px]  bg-[#333]">
           <Sidebar />
         </div>

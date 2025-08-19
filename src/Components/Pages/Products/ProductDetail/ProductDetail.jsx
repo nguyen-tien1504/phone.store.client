@@ -7,7 +7,7 @@ import { addToCart } from "../../../../Redux/Action";
 const BackButton = () => {
   return (
     <Link
-      to="/products/all"
+      to="/"
       className="bg-[orange]/70 px-5 py-2 rounded text-base font-normal  flex gap-2 items-center w-fit"
     >
       <svg
@@ -94,7 +94,7 @@ const ProductDetail = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     axios
-      .get(`https://phone-store-server.onrender.com/products/${productID}`)
+      .get(`http://localhost:3000/products/${productID}`)
       .then((res) => setData({ ...res.data.product, id: res.data.product._id }))
       .then(() => setIsLoaded(true))
       .catch((err) => console.log(err));

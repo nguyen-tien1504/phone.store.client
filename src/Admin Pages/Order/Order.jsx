@@ -2,45 +2,22 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Heading } from "../Products/getAllProducts";
+import { useAllUserCart, useUpdateOrderStatus } from "../../Query/query";
 
 const Order = () => {
-  const [data, setData] = useState([]);
-  const [status, setStatus] = useState("Đang chờ duyệt");
-  const [load, setLoad] = useState(false);
+  const { mutate: updateOrderStatus, isLoading: isUpdating } = useUpdateOrderStatus();
+
   function getDate(x) {
-    return new Date(x)
-      .toISOString()
-      .replace(/T.*/, "")
-      .split("-")
-      .reverse()
-      .join("/");
+    return new Date(x).toISOString().replace(/T.*/, "").split("-").reverse().join("/");
   }
   function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
-  useEffect(() => {
-    axios
-      .get("https://phone-store-server.onrender.com/users")
-      .then((res) => {
-        const newArr = res.data.users.filter((item) => {
-          return item.order.totalBill > 0;
-        });
-        return newArr;
-      })
-      .then((data) => setData(data))
-      .then(() => setLoad(true))
-      .catch((err) => console.log(err));
-  }, []);
-  const handleStatus = () => {
-    if (status == "Đang chờ duyệt") {
-      setStatus("Đang giao hàng");
-    } else if (status == "Đang giao hàng") {
-      setStatus("Giao hàng thành công");
-    }
+
+  const handleStatusChange = (userId, newStatus) => {
+    updateOrderStatus({ userId, status: newStatus });
   };
-  if (!load) {
-    return <>Loading...</>;
-  }
+  const { data, isLoading } = useAllUserCart();
   return (
     <div className="h-screen">
       <Heading name={"Danh sách đơn hàng"} />
@@ -58,56 +35,59 @@ const Order = () => {
               <th className="px-4">Thao tác</th>
             </tr>
           </thead>
-          <tbody>
-            {data.map((item, index) => {
-              return (
-                <tr className="" key={index}>
-                  <td className="py-2">{index + 1}</td>
-                  <td>{item.fullName}</td>
-                  <td>{item.phone}</td>
-                  <td>{getDate(item.order.orderAt)}</td>
-                  <td>{status}</td>
-                  <td>
-                    {item.order.totalBill
-                      ? numberWithCommas(item.order.totalBill)
-                      : ""}
-                  </td>
-                  <td>
-                    <div>
-                      {!(status == "Đã hủy") && (
-                        <button
-                          className="text-[#2f80ed] font-medium  px-2"
-                          onClick={handleStatus}
-                        >
-                          {status == "Đang chờ duyệt"
-                            ? "Duyệt đơn"
-                            : status == "Đang giao hàng"
-                            ? "Xác nhận thanh toán"
-                            : ""}
-                        </button>
+          {!isLoading && (
+            <tbody>
+              {data.map((item, index) => {
+                return (
+                  <tr
+                    className=""
+                    key={index}>
+                    <td className="py-2">{index + 1}</td>
+                    <td>{item.fullName}</td>
+                    <td>{item.phone}</td>
+                    <td>{getDate(item.order.orderAt)}</td>
+                    <td>{item.order.status}</td>
+                    <td>
+                      {item.order.totalBill ? numberWithCommas(item.order.totalBill) : ""}
+                    </td>
+                    <td>
+                      {item.order.status !== "Đang chờ duyệt" ? (
+                        <div
+                          className={
+                            item.order.status === "Đã duyệt"
+                              ? "text-green-500 text-[#2f80ed] font-medium px-2"
+                              : "text-red-500 text-[#2f80ed] font-medium px-2"
+                          }>
+                          {item.order.status}
+                        </div>
+                      ) : (
+                        <div>
+                          <button
+                            className="text-[#2f80ed] font-medium  px-2 text-green-500"
+                            onClick={() => handleStatusChange(item._id, "Đã duyệt")}>
+                            Duyệt đơn
+                          </button>
+
+                          <button
+                            className="text-[#2f80ed] font-medium px-2 border-l border-solid border-[#333] text-red-500"
+                            onClick={() => handleStatusChange(item._id, "Đã hủy")}>
+                            Hủy đơn
+                          </button>
+                        </div>
                       )}
-                      {status == "Đang chờ duyệt" && (
-                        <button
-                          className="text-[#2f80ed] font-medium px-2 border-l border-solid border-[#333]"
-                          onClick={() => setStatus("Đã hủy")}
-                        >
-                          Hủy đơn
-                        </button>
-                      )}
-                    </div>
-                  </td>
-                  <td>
-                    <Link
-                      to={`/admin/orders/order-detail/${item._id}`}
-                      className="text-[#2f80ed] font-medium px-2"
-                    >
-                      Xem chi tiết
-                    </Link>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
+                    </td>
+                    <td>
+                      <Link
+                        to={`/admin/orders/order-detail/${item._id}`}
+                        className="text-[#2f80ed] font-medium px-2">
+                        Xem chi tiết
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          )}
         </table>
       </div>
     </div>
